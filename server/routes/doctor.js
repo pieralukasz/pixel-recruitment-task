@@ -5,6 +5,6 @@ const doctorRouter = new Router()
 
 doctorRouter.get('/login', doctorController.login)
 
-doctorRouter.post('/makedrug', doctorController.makeDrug)
+doctorRouter.get('/drugs-list', doctorController.drugList)
 
 export default doctorRouter

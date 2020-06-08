@@ -1,23 +1,41 @@
 import Drug from '@models/Drugs.js'
-import fetch from 'node-fetch'
+import Doctor from '@models/Doctor.js'
 
-const login = (req, res) => {}
+const login = async (req, res) => {
 
-const makeDrug = (req, res) => {
+    const { slugName, password } = req.body.user
 
-    const { nameEnglish, namePolish, info } = req.body
+    const user = await Doctor.findOne({ slugName })
 
-    Drug.create({
-        nameEnglish,
-        namePolish,
-        info
-    }).then(() => console.log('dodano do bazy' + namePolish))
+    if(user) {
 
-    res.json({hihi: 'hiih'})
+        if(password === user.password) {
+
+            const { name, slugName } = user
+
+            return res.status(201).json( { name, slugName } )
+
+        } else {
+
+            return res.status(422).json( { message: 'Wrong password' } )
+        }
+
+    } 
+
+    return res.status(422).json({ message: 'This user does not exist ' })
 
 }
 
+const drugList = (req, res) => {
+
+    Drug.find({}).then(function(drugs){
+        res.send(drugs)
+    })
+
+}
+
+
 export default {
     login,
-    makeDrug
+    drugList
 }

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const DrugSchema = new mongoose.Schema({
+    
     nameEnglish: String,
 
     namePolish: String,
