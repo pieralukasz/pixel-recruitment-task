@@ -11,4 +11,8 @@
   box-sizing: border-box;
 }
 
+#app {
+  background-color: rgb(248, 246, 246);
+}
+
 </style>

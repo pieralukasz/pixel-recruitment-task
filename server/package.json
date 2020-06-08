@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.9.18",
     "node-fetch": "^2.6.0",
+    "simple-vue-validator": "^0.16.0",
     "slugify": "^1.4.0"
   },
   "devDependencies": {
