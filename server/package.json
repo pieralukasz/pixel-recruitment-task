@@ -14,17 +14,20 @@
   "author": "Piera",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-module-resolver": "^4.0.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.9.18",
+    "node-fetch": "^2.6.0",
     "slugify": "^1.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/node": "^7.10.1",
+    "@babel/plugin-transform-async-to-generator": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5"

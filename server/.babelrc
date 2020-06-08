@@ -8,5 +8,27 @@
             }
           }
         ]
+    ],
+    "plugins": [
+
+      "@babel/plugin-transform-async-to-generator",
+      [
+        "module-resolver", {
+
+          "root": ["./"],
+
+          "alias": {
+
+            "@models": "../server/models",
+
+            "@config": "../server/config",
+
+            "@routes": "../server/routes",
+
+            "@controllers": "../server/controllers"
+            
+          }
+        }
+      ]
     ]
 }

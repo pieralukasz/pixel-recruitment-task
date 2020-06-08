@@ -2,8 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import config from './config/index'
-import api from './routes/doctor'
+import config from '@config/index'
+import api from '@routes/doctor'
 
 // set port
 
