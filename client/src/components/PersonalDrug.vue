@@ -5,9 +5,15 @@
             .personal__information {{ patient.surname }} {{ patient.name }}
             .personal__pesel PESEL  {{ patient.PESEL }}
         .personal__dosages 
-        .personal__dosages__add
-        .personal__delete__patient
+        .personal__dosages__add.btn-large(@click="addNewDosage") Nowe zlecenie
+        .personal__delete__patient(@click="deletePatientAsk")
             i.material-icons delete
+        .delete(v-if="timeToDelete")
+            .delete__information 
+                .info Czy na pewno chcesz usunac pacjenta 
+                    span {{ patient.surname }} {{patient.name}}
+                .yes.btn(@click="deletePatient") TAK
+                .no.btn.blue(@click="deletePatientAsk") NIE
 
 </template>
 
@@ -17,7 +23,8 @@ export default {
   name: 'Personal',
   data() {
     return {
-        patient: ""
+        patient: "",
+        timeToDelete: false
     }
   },
   computed: {
@@ -30,6 +37,7 @@ export default {
       patientPesel: async function(val, oldVal) {
           if(oldVal !==  val) {
               this.patient = await this.$store.dispatch('getInformation', this.patientPesel)
+              this.timeToDelete = false;
           }
       }
   },
@@ -42,6 +50,21 @@ export default {
 
   methods: {
 
+      deletePatientAsk() {
+          this.timeToDelete = !this.timeToDelete
+      },
+
+      deletePatient() {
+
+          this.$store.dispatch('deletePatient', this.patient)
+          .then(() => this.$router.push({name: 'Home'}))
+
+      },
+
+      addNewDosage() {
+          this.$router.push({name: 'Dosage', params: { name: this.patientPesel }})
+      }
+
   },
 
 }
@@ -53,6 +76,7 @@ export default {
     width: 100%;
     height: 100%;
     font-family: 'Roboto Condensed', sans-serif;
+    position: relative;
 
     &__top {
         width: 100%;
@@ -121,14 +145,35 @@ export default {
         }
         
     }
+
+    &__dosages {
+        position: absolute;
+        top: 23%;
+        width: 100%;
+        height: 50%;
+        // background-color: red;
+    }
+
+    &__dosages__add {
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color:rgb(58, 150, 226);
+        font-size: 1.3rem;
+    }
     
 
     &__delete__patient {
 
         position: absolute;
         right: 3%;
-        bottom: 3%;
+        bottom: 10%;
         cursor: pointer;
+
+        @media (max-width: 900px) {
+            bottom: 20%;
+        }
         
         
         i {
@@ -140,6 +185,50 @@ export default {
             }
         }
         
+    }
+}
+
+.delete{
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(177, 177, 177);
+    border-radius: 12px;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-shadow: 0 0 30px rgb(0, 0, 0);
+        box-shadow: 0 0 30px rgb(0, 0, 0);
+
+    
+    &__information {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        font-family: 'Roboto Condensed', sans-serif;
+        justify-content: space-evenly;
+        align-items: center;
+
+        .info {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .btn {
+            width: 20%;
+            margin: 20px;
+            background-color: #ef5350;
+        }
     }
 }
 

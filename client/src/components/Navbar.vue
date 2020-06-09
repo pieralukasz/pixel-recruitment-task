@@ -5,7 +5,7 @@
         .navbar__info 
             span Panel zarzadzania pacjentami
         .navbar__doctor-name
-            span Dr. {{doctor.name}}         
+            span Dr {{doctor.name}}         
         Logout.logout-comp
 
 

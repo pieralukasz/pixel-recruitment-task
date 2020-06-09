@@ -10,9 +10,11 @@ const DosageSchema = new mongoose.Schema({
 
     dosageTime: [Object],
 
-    branch: String,
+    dateStart: Date,
 
-    addDate: String
+    dateEnd: Date,
+
+    branch: String
 
 })
 

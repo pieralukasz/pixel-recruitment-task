@@ -31,6 +31,14 @@ const drugList = (req, res) => {
 
 }
 
+const branchList = (req, res) => {
+
+    Branch.find({}).then(function(branch){
+        res.send(branch)
+    })
+
+} 
+
 const makePatient = (req, res) => {
 
     const patient = req.body
@@ -71,13 +79,25 @@ const sendInformationPatient = async (req, res) => {
 
 }
 
+const deletePatient = async (req, res) => {
+
+    const { PESEL, name } = req.body
+
+    Patient.deleteOne( {PESEL })
+    .then(() => console.log('Usunieto z bazy danych' + name))
+    .then(() => res.send('Usunieto'))
+
+}
+
 
 
 
 export default {
     login,
     drugList,
+    branchList,
     makePatient,
     sendPatients,
-    sendInformationPatient
+    sendInformationPatient,
+    deletePatient
 }

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import store from '..'
 
+const apiURL = 'http://192.168.8.152:8080'
+
 export default {
     
     state: {
@@ -12,7 +14,7 @@ export default {
     actions: {
 
         async pills() {
-            await axios.get(`http://10.11.24.228:8080/drugs-list`)
+            await axios.get(apiURL + `/drugs-list`)
         },
 
         async addNewPatient(context, data) {
@@ -21,7 +23,7 @@ export default {
 
             const patient = Object.assign(data, { doctor })
 
-            await axios.post('http://10.11.24.228:8080/make-patient', patient)
+            await axios.post(apiURL + '/make-patient', patient)
             .then(() => store.dispatch('getPatients'))
 
                     
@@ -31,7 +33,7 @@ export default {
 
             let response = ""
             
-            await axios.post('http://10.11.24.228:8080/get-information', { data })
+            await axios.post(apiURL + '/get-information', { data })
             .then(res => response = res.data)
 
             return response
@@ -47,11 +49,40 @@ export default {
 
             let patients = ""
 
-            await axios.post('http://10.11.24.228:8080/take-patients', {doctor})
+            await axios.post(apiURL + '/take-patients', {doctor})
             .then(res => commit('SET_PATIENTS', res.data))
 
             return patients
 
+        },
+
+        async deletePatient(context, data) {
+
+            await axios.delete(apiURL + '/delete-patient', {data})
+            .then(() => store.dispatch('getPatients'))
+
+        },
+
+        async getDrugs() {
+
+            let drugsList = ""
+
+            await axios.get(apiURL + '/drugs-list')
+            .then(res  => drugsList = res.data)
+
+
+            return drugsList;
+        },
+
+        async getBranches() {
+
+            let branchList = ""
+
+            await axios.get(apiURL + '/branch-list')
+            .then(res  => branchList = res.data)
+
+
+            return branchList;
         }
 
     },

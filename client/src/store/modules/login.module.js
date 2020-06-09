@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const apiURL = 'http://192.168.8.152:8080'
+
 export default {
     
     state: {
@@ -11,12 +13,11 @@ export default {
     actions: {
 
         async login({ commit }, data) {
-            await axios.post(`http://10.11.24.228:8080/login`, data)
+            await axios.post(apiURL + `/login`, data)
             .then(res => {commit('SET_DOCTOR', res.data)})
         }
 
     },
-
 
     mutations: {
 

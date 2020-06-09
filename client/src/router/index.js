@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import PersonalDrug from '../components/PersonalDrug.vue'
+import Dosage from '../components/Dosage.vue'
 import AddNew from '../components/NewPatient.vue'
 
 Vue.use(VueRouter)
@@ -23,6 +24,11 @@ Vue.use(VueRouter)
         path: 'patient/:name',
         name: 'PersonalDrug',
         component: PersonalDrug
+      },
+      {
+        path: 'dosage/:name',
+        name: 'Dosage',
+        component: Dosage
       }
     ]
 
