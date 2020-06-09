@@ -1,24 +1,27 @@
 <template lang="pug">
   .login__form
       form(@submit.prevent="checkForm")
+          img(src="../assets/doctor.png")
           .login__form__information 
-              span Panel Logowania Lekarza
+              span Panel logowania lekarza
           .login__form__login.login_element
             ValidationProvider.validation(v-slot="{ errors }" rules="required")
-              span(v-if="errors[0]") {{errors[0]}}
               input.login__input(type="text" name="login" v-model="doctor.login")
-              label(name="login") Login
+              label(name="login" v-if="!errors[0]") Login
+              label(name="login" v-else).red-text Login
           .login__form__password.login_element
             ValidationProvider.validation(v-slot="{ errors }" rules="password")
-              span(v-if="errors[0]") {{errors[0]}}
               input.login__input(type="password" name="password" v-model="doctor.password")
-              label(name="password") Haslo 
+              label(name="password" v-if="!errors[0]") Haslo 
+              label(name="password" v-else).red-text Haslo
           .login__form__button.login_element
-              button.login__button.btn.blue Zaloguj
+              button.login__button.btn Zaloguj
 
 </template>
 
 <script>
+
+import '../assets/doctor.png'
 
 export default {
   name: 'Login',
@@ -50,6 +53,7 @@ export default {
 <style scoped lang="scss">
 
 .login__form {
+  font-family: 'Roboto Condensed', sans-serif;
 
   position: absolute;
   left: 50%;
@@ -58,10 +62,14 @@ export default {
   width: 30%;
   max-width: 420px;
   height: 380px;
-  border: 1px solid rgb(129, 129, 129);
-  background-color: rgb(255, 255, 255);  .login__form__button {}
+  border: 1px solid rgb(187, 186, 186);
+  background-color: rgb(255, 255, 255); 
 
   transition: .5s;
+
+  &:hover {
+    border: 1px solid rgb(58, 58, 58);
+  }
 
   @media (max-width: 1200px) {
     width: 60%
@@ -80,16 +88,25 @@ export default {
   justify-content: center;
   align-items: center;
 
+  position: relative;
+
+  img {
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    right: 50%;
+    top: 0%;
+    transform: translate(50%, -80%);
+  }
+
   .login__form__information {
     font-size: 1.5rem;
     padding-bottom: 20px;
+    color: #26a69a;
   }
 
   .login_element {
     margin: 10px 0 10px 0;
-
-
-
   }
 
   .validation {

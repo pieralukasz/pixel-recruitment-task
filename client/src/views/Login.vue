@@ -23,6 +23,7 @@ export default {
 <style lang="scss">
 
 .login {
+
   width: 100vw;
   height: 100vh;
 }

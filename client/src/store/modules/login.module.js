@@ -11,7 +11,7 @@ export default {
     actions: {
 
         async login({ commit }, data) {
-            await axios.post(`http://localhost:8080/login`, data)
+            await axios.post(`http://10.11.24.228:8080/login`, data)
             .then(res => {commit('SET_DOCTOR', res.data)})
         }
 

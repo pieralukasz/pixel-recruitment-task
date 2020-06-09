@@ -11,6 +11,8 @@ const login = async (req, res) => {
 
         const { name, slugName } = user
 
+        console.log(`Logowanie doktora ${name} powiodlo sie.`)
+
         return res.status(201).json( { name, slugName } )
 
     } 
@@ -27,8 +29,13 @@ const drugList = (req, res) => {
 
 }
 
+const makePatient = (req, res) => {
+
+}
+
 
 export default {
     login,
-    drugList
+    drugList,
+    makePatient
 }
