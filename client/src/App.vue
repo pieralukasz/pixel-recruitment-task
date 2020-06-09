@@ -13,6 +13,7 @@
 
 #app {
   background-color: rgb(248, 246, 246);
+  overflow: hidden;
 }
 
 </style>

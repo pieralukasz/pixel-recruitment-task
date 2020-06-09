@@ -9,4 +9,6 @@ doctorRouter.get('/drugs-list', doctorController.drugList)
 
 doctorRouter.post('/make-patient', doctorController.makePatient)
 
+doctorRouter.post('/take-patients', doctorController.sendPatients)
+
 export default doctorRouter

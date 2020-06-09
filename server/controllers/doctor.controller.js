@@ -1,5 +1,6 @@
 import Drug from '@models/Drugs.js'
 import Doctor from '@models/Doctor.js'
+import Patient from '@models/Patient.js'
 
 const login = async (req, res) => {
 
@@ -31,11 +32,36 @@ const drugList = (req, res) => {
 
 const makePatient = (req, res) => {
 
+    const patient = req.body
+
+    Patient.create({
+        name: patient.name,
+        surname: patient.surname,
+        PESEL: patient.PESEL,
+        doctor: patient.doctor
+    })
+    .then(() => {
+        console.log('dodano do bazy ' + patient.name);
+    })
+
+    res.json({message: 'Dodano do bazy'})
+}
+
+const sendPatients = async (req, res) => {
+
+    const { doctor } = req.body
+
+    console.log(doctor);
+
+    const allPatients = await Patient.find({ doctor })
+
+    res.send(allPatients)
 }
 
 
 export default {
     login,
     drugList,
-    makePatient
+    makePatient,
+    sendPatients
 }

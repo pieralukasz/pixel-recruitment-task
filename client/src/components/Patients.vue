@@ -1,7 +1,20 @@
 <template lang="pug">
     .patients
         .patients__information 
-            span Pacjencji
+            span Pacjenci
+        .patients__infoflex
+            div Imie i nazwisko
+            div Pesel
+        .patients__container 
+            .patients__patient(v-for="patient in patients" :key="patient._id" @click="showInfo(patient)")
+                .name.patient__info
+                    span {{patient.name}} {{patient.surname}}
+                .pesel.patient__info
+                    span {{ patient.PESEL }}
+        .patients__add
+          router-link(:to="{name: 'AddNew'}")
+            .add
+                i.material-icons add
 
 </template>
 
@@ -11,11 +24,36 @@ export default {
   name: 'Patient',
   data() {
     return {
-      
+        patients: null
       
     }
   },
+
+  async created() {
+
+      this.patients = await this.$store.dispatch('getPatients')
+      this.patients.sort(this.compare)
+    
+  },
   methods: {
+
+    showInfo(patient) {
+      console.log(patient)
+    },
+
+    compare(a, b) {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+
+      let comparison = 0;
+      
+      if (nameA > nameB) {
+          comparison = 1;
+      } else if (nameA < nameB) {
+          comparison = -1;
+      }
+      return comparison;
+    },
 
 
   },
@@ -28,7 +66,7 @@ export default {
 
 .patients {
 
-  width: 25%;
+  width: 500px;
   height: 100%;
   z-index: 10;
   border-right: 1px solid #c9c9c9;
@@ -74,6 +112,93 @@ export default {
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+
+  &__infoflex {
+    height: 5%;
+    padding-top: 20px;
+    padding-right: 70px;
+    padding-left: 50px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 2%;
+    text-transform: uppercase;
+    
+  }
+
+  &__container{
+
+    // margin-top: 40px;
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    .patients__patient {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      align-items: center;
+      margin: 6px;
+      width: 90%;
+      height: 50px;
+      font-size: 1.2rem;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 6px;
+      background-color: rgb(221, 221, 221);
+      cursor: pointer;
+
+      .patient__info{
+        span {
+          margin: 5px;
+
+          &:nth-child(2) {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    @media (max-height: 800px) {
+      height: 75%;
+    }
+
+  }
+
+  .patients__add {
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    
+
+    .add{
+      background-color: #26a69a;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin-top: 15px;
+
+      i {
+          font-size: 2rem;
+      }
+
+    }
+
   }
 
 

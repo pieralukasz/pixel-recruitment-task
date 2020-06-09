@@ -3,7 +3,7 @@
       Patients
       .right
         Navbar
-        Window
+        router-view
 
 
 
@@ -13,14 +13,12 @@
 
 import Patients from '@/components/Patients.vue'
 import Navbar from '@/components/Navbar.vue'
-import Window from '@/components/Window.vue'
 
 export default {
   name: 'Home',
   components: {
     Patients,
     Navbar,
-    Window
   },
 
   created() {
@@ -35,6 +33,7 @@ export default {
 .home {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 
   display: flex;
 

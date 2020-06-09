@@ -48,13 +48,18 @@ export default {
             window.addEventListener('touchmove', (e) => {
                 if(!this.initial) return
 
-                const whereNow = e.touches[0].clientX
+                if(this.initial > patients.clientWidth) {
+                    
+                    const whereNow = e.touches[0].clientX
 
-                const howMany = this.initial - whereNow
+                    const howMany = this.initial - whereNow
 
-                if(howMany > 0) {
-                    patients.style.left = "-150%"
+                    if(howMany > 0) {
+                        patients.style.left = "-150%"
+                    }
                 }
+
+
             })
         }
 
@@ -102,7 +107,7 @@ export default {
 
     &__doctor-name {
         position: absolute;
-        left: 15%;
+        left: 13%;
         bottom: 10%;
         font-weight: bold;
     }
@@ -120,7 +125,7 @@ export default {
         }
 
         &__info {
-            left: 12%
+            left: 17%
         }
 
         &__doctor-name {
