@@ -45,7 +45,7 @@ export default {
   },
   methods: {
 
-      addNewPatient() {
+      async addNewPatient() {
 
           if([...this.patient.name].length < 3) {
               return;
@@ -54,8 +54,11 @@ export default {
           } else if ([...this.patient.PESEL].length != 11){
               return;
           } else {
-              this.$store.dispatch('addNewPatient', this.patient)
-              .then(() => location.reload())
+              await this.$store.dispatch('addNewPatient', this.patient)
+                    .then(() => {
+                        this.$router.push({name: 'PersonalDrug', params: { name: this.patient.PESEL }})
+                    })
+              
           }
       }
 
@@ -82,6 +85,10 @@ export default {
         background-color: rgb(255, 255, 255); 
         transition: .5s;
         position: relative;
+        
+        @media (max-width: 800px) {
+            margin-bottom: 20%;
+        }
 
         &:hover {
             border: 1px solid rgb(58, 58, 58);

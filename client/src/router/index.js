@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-// import Window from '../components/Window.vue'
+import PersonalDrug from '../components/PersonalDrug.vue'
 import AddNew from '../components/NewPatient.vue'
 
 Vue.use(VueRouter)
@@ -18,6 +18,11 @@ Vue.use(VueRouter)
         path: 'add-new',
         name: 'AddNew',
         component: AddNew
+      },
+      {
+        path: 'patient/:name',
+        name: 'PersonalDrug',
+        component: PersonalDrug
       }
     ]
 

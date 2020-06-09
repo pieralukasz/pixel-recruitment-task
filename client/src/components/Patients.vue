@@ -3,16 +3,16 @@
         .patients__information 
             span Pacjenci
         .patients__infoflex
-            div Imie i nazwisko
+            div Nazwisko i imie
             div Pesel
         .patients__container 
-            .patients__patient(v-for="patient in patients" :key="patient._id" @click="showInfo(patient)")
+            .patients__patient(v-for="patient in patients" :key="patient._id" @click="moveToPersonal(patient)")
                 .name.patient__info
-                    span {{patient.name}} {{patient.surname}}
+                    span {{patient.surname}} {{patient.name}} 
                 .pesel.patient__info
                     span {{ patient.PESEL }}
-        .patients__add
-          router-link(:to="{name: 'AddNew'}")
+        .patients__add(@click="hideHamburger")
+          router-link(:to="{name: 'AddNew'}" )
             .add
                 i.material-icons add
 
@@ -24,26 +24,46 @@ export default {
   name: 'Patient',
   data() {
     return {
-        patients: null
       
     }
+  },
+  computed: {
+      patients: function() {
+        return this.$store.state.Home.patients
+      }
+  },
+
+  watch: {
+      patients: function(val, oldVal) {
+        if(oldVal !== val) {
+            this.patients.sort(this.compare)
+        }
+      }
   },
 
   async created() {
 
-      this.patients = await this.$store.dispatch('getPatients')
+      await this.$store.dispatch('getPatients')
       this.patients.sort(this.compare)
     
   },
   methods: {
 
-    showInfo(patient) {
-      console.log(patient)
+    moveToPersonal(patient) {
+      if(this.$route.params.name !== patient.PESEL){
+        this.$router.push({name: 'PersonalDrug', params: { name: patient.PESEL }})
+        this.hideHamburger()
+      }
+      
+    },
+
+    hideHamburger() {
+      document.querySelector('.patients').style.left = "-150%"
     },
 
     compare(a, b) {
-      const nameA = a.name.toUpperCase();
-      const nameB = b.name.toUpperCase();
+      const nameA = a.surname.toUpperCase();
+      const nameB = b.surname.toUpperCase();
 
       let comparison = 0;
       
@@ -152,7 +172,13 @@ export default {
       border: 1px solid rgb(204, 204, 204);
       border-radius: 6px;
       background-color: rgb(221, 221, 221);
+      transition: .5s;
       cursor: pointer;
+
+      &:hover {
+        border: 1px solid rgb(233, 233, 233);
+        background-color: #fff;
+      }
 
       .patient__info{
         span {
@@ -190,11 +216,18 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: .3s;
 
       margin-top: 15px;
 
       i {
           font-size: 2rem;
+      }
+
+      &:hover {
+        box-shadow: 0 0 0 3px #26a69a;
+        background-color: #fff;
+        color: #26a69a;
       }
 
     }

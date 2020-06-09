@@ -1,6 +1,7 @@
 import Drug from '@models/Drugs.js'
 import Doctor from '@models/Doctor.js'
 import Patient from '@models/Patient.js'
+import Branch from '@models/Branch.js'
 
 const login = async (req, res) => {
 
@@ -51,17 +52,32 @@ const sendPatients = async (req, res) => {
 
     const { doctor } = req.body
 
-    console.log(doctor);
-
     const allPatients = await Patient.find({ doctor })
 
     res.send(allPatients)
 }
+
+const sendInformationPatient = async (req, res) => {
+
+    const PESEL = req.body.data
+
+    const patient = await Patient.findOne({ PESEL })
+
+    if(patient) {
+        res.send(patient)
+    } else {
+        res.send('not working')
+    }
+
+}
+
+
 
 
 export default {
     login,
     drugList,
     makePatient,
-    sendPatients
+    sendPatients,
+    sendInformationPatient
 }
