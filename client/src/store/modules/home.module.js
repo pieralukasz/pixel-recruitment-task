@@ -93,15 +93,27 @@ export default {
 
         async getDosages(context, PESEL) {
 
-            let dosageList = ""
+            let dosageList = undefined
 
             await axios.post(apiURL + '/get-dosages', {PESEL})
-                .then(res => dosageList = res.data)
+                .then(res => {  
+                    
+                    if(res.data.length > 0){
+                        dosageList = res.data
+                    } else {
+                        dosageList = undefined
+                    }}
+                )
 
             return dosageList
 
-        }
+        },
 
+        async deleteDosage(context, data) {
+            await axios.post(apiURL + '/delete-dosage', {data})
+                .then(store.dispatch('getDosages'))
+        }
+ 
     },
 
     mutations: {

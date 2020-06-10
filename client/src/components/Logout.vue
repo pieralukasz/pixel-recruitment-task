@@ -18,6 +18,7 @@ export default {
   methods: {
       logout(){
           this.$store.commit('CLEAR_DOCTOR')
+          this.$store.commit('CLEAR_PATIENTS')
           this.$router.push({name: 'Login'})
       }
 

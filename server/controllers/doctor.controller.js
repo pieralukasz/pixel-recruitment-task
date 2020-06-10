@@ -99,6 +99,7 @@ const createDosage = async (req, res) => {
         name: dosage.name,
         surname: dosage.surname,
         dosage: dosage.dosage,
+        drug: dosage.drug,
         date: dosage.date,
         branch: dosage.branch
     }).then(() => {
@@ -106,7 +107,6 @@ const createDosage = async (req, res) => {
         res.json(dosage)
     })
 
-    res.send('Not...')
 
 }
 
@@ -115,9 +115,20 @@ const getDosages = async (req, res) => {
     const PESEL = req.body.PESEL
 
     Dosages.find({PESEL}).then(function(branch){
+        console.log(branch);
         res.send(branch)
     })
 } 
+
+const deleteDosage = async (req, res) => {
+
+    const dosage = req.body.data
+
+    Dosages.deleteOne( {_id: dosage._id })
+    .then(() => console.log('Usunieto z bazy danych' + dosage.drug))
+    .then(() => res.send('Usunieto'))
+
+}
 
 
 
@@ -130,5 +141,6 @@ export default {
     sendInformationPatient,
     deletePatient,
     createDosage,
-    getDosages
+    getDosages,
+    deleteDosage
 }

@@ -8,6 +8,8 @@ const DosageSchema = new mongoose.Schema({
 
     surname: String,
 
+    drug: String,
+
     dosage: [Object],
 
     date: [Object],

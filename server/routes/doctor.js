@@ -21,5 +21,7 @@ doctorRouter.post('/create-dosage', doctorController.createDosage)
 
 doctorRouter.post('/get-dosages', doctorController.getDosages)
 
+doctorRouter.post('/delete-dosage', doctorController.deleteDosage)
+
 
 export default doctorRouter

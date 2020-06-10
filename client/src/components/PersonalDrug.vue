@@ -4,7 +4,29 @@
             .personal__title Profil pacjenta 
             .personal__information {{ patient.surname }} {{ patient.name }}
             .personal__pesel PESEL  {{ patient.PESEL }}
-        .personal__dosages {{dosages}}
+        .personal__dosages 
+            .dosages__container(v-if="dosages") 
+                .dosages__container__navbar 
+                    .drug.item Lekarstwo
+                    .time_quantity.item Czas i ilosc
+                    .period-start.item Poczatek 
+                    .period-end.item Koniec
+                    .branch.item Oddzial
+                    .delete__dosage.item
+                .dosages__container__items
+                    template(v-for="dosage in dosages")
+                        .drug.item {{ dosage.drug }}
+                        .time_quantity.item 
+                            .little-container(v-for="time in dosage.dosage")
+                                .time.element {{ time.time }}
+                                .quantity.element {{ time.quantity }}
+                        .period-start.item {{ dosage.date[0].start}}
+                        .period-end.item {{ dosage.date[1].end}}
+                        .branch.item {{dosage.branch}}
+                        .delete__dosage.item 
+                            i.material-icons(@click="deleteDosageAsk(dosage)") delete
+                        .border-bottom
+            .dosages__error(v-else) BRAK LEKARSTW   
         .personal__dosages__add.btn-large(@click="addNewDosage") Nowe zlecenie
         .personal__delete__patient(@click="deletePatientAsk")
             i.material-icons delete
@@ -16,6 +38,13 @@
                     span {{ patient.surname }} {{patient.name}}
                 .yes.btn(@click="deletePatient") TAK
                 .no.btn.blue(@click="deletePatientAsk") NIE
+        .delete(v-if="timeToDeleteDosage")
+            .delete__information 
+                .info Czy na pewno chcesz usunac lekarstwo 
+                    span {{ dosageDelete.drug }} 
+                .yes.btn(@click="deleteDosage") TAK
+                .no.btn.blue(@click="deleteDosageAsk") NIE
+        
 
 </template>
 
@@ -26,8 +55,10 @@ export default {
   data() {
     return {
         patient: "",
-        dosages: "",
-        timeToDelete: false
+        dosages: undefined,
+        timeToDelete: false,
+        timeToDeleteDosage: false,
+        dosageDelete: ""
     }
   },
   computed: {
@@ -44,6 +75,12 @@ export default {
               this.timeToDelete = false;
           }
       },
+      dosages: async function(oldVal, val) {
+          if(oldVal !== val) {
+              this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
+          }
+      }
+
   },
 
   async created() {
@@ -59,6 +96,12 @@ export default {
           this.timeToDelete = !this.timeToDelete
       },
 
+      deleteDosageAsk(pick = false){
+          this.timeToDeleteDosage = !this.timeToDeleteDosage
+          if(pick) this.dosageDelete = pick
+          
+      },
+
       deletePatient() {
 
           this.$store.dispatch('deletePatient', this.patient)
@@ -72,6 +115,14 @@ export default {
 
       printPatient() {
           console.log(this.patient);
+      },
+
+      deleteDosage() {
+          this.$store.dispatch('deleteDosage', this.dosageDelete)
+          .then(() => {
+              this.timeToDeleteDosage = false
+          })
+
       }
 
   },
@@ -157,10 +208,187 @@ export default {
 
     &__dosages {
         position: absolute;
-        top: 23%;
+        top: 15%;
         width: 100%;
         height: 50%;
         // background-color: red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        @media (max-height: 600px) {
+            height: 40%;
+        }
+
+        .dosages__container__navbar {
+
+                width: 100%;
+                display: flex;
+                font-size: 1.2rem;
+                text-align: center;
+                color: white;
+
+                @media (max-width: 700px) {
+                    font-size: 0.7rem;
+                }
+
+                .item {
+                    margin: 1px;
+                    background: #26a69a;
+                    padding: 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .drug {
+                    width: 18%
+                }
+                .time_quantity {
+                    width: 17%;
+                }
+
+                .period-start {
+                    width: 17%;
+                }
+
+                .period-end {
+                    width: 17%;
+                }
+
+                .branch {
+                    width: 25%;
+                }
+
+                .delete__dosage {
+                    width: 6%;
+                    cursor: pointer;
+                }
+
+
+            }
+
+        .dosages__container {
+            // background:blue;
+            width: 90%;
+            height: 100%;
+            
+
+        }
+
+        .dosages__container__items {
+            max-height: 100%;
+            height: auto;
+            overflow-y: scroll;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            // align-items: center;
+
+            &::-webkit-scrollbar {
+                background: rgb(61, 61, 61);
+                width: 0px;
+            }
+            &::-webkit-scrollbar-thumb {
+                background: #ececec;
+            }
+
+            .item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 25%;
+                min-height: 150px;
+
+                @media (max-width: 700px) {
+                    min-height: 100px;
+                }
+        
+                padding: 10px;
+                text-align: center;
+                // background:red;
+
+                @media (max-width: 700px) {
+                    font-size: 70%;
+
+                    i {
+                        font-size: 1rem;
+                    }
+                }
+                
+            }
+
+                .drug {
+                    width: 18%;
+                    text-transform: uppercase;
+                    font-weight: bold;
+
+                    @media (max-width: 700px) {
+                        font-size: 50%;
+                    }
+                    @media (max-width: 400px) {
+                        font-size: 40%;
+                    }
+                }
+                .time_quantity {
+                    width: 17%;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    @media (max-width: 700px) {
+                        font-size: 70%;
+                    }
+
+                    .little-container {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-evenly;
+
+                        .quantity {
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                .period-start {
+                    width: 17%;
+                }
+
+                .period-end {
+                    width: 17%;
+                }
+
+                .branch {
+                    width: 25%;
+
+                    @media (max-width: 370px) {
+                        width: 22%;
+                    }
+                }
+
+                .delete__dosage {
+                    width: 6%;
+
+
+                        i {
+                        cursor: pointer;
+                        transition: .3s;
+
+                        &:hover {
+                            color: rgb(224, 73, 73);
+                        }
+                    }
+                }
+
+                .border-bottom {
+                    width: 99%;
+                    height: 1px;
+                    background: rgb(133, 133, 133);
+                }
+        }
+
+
     }
 
     &__dosages__add {
@@ -170,6 +398,14 @@ export default {
         transform: translateX(-50%);
         background-color:rgb(58, 150, 226);
         font-size: 1.3rem;
+
+        @media (max-height: 600px) {
+            bottom: 30%
+        }
+
+        @media (max-height: 1500px) {
+            bottom: 20%
+        }
     }
     
 
@@ -180,9 +416,17 @@ export default {
         bottom: 10%;
         cursor: pointer;
 
-        @media (max-width: 900px) {
-            bottom: 20%;
+        @media (max-height: 600px) and (max-width: 900px){
+            bottom: 30%
         }
+
+        @media (max-height: 900px) and (max-width: 1500px){
+            bottom: 20%
+        }
+
+        // @media (max-width: 900px) {
+        //     bottom: 20%;
+        // }
         
         
         i {
@@ -203,8 +447,12 @@ export default {
         bottom: 10%;
         cursor: pointer;
 
-        @media (max-width: 900px) {
-            bottom: 20%;
+        @media (max-height: 600px) and (max-width: 900px){
+            bottom: 30%
+        }
+
+        @media (max-height: 900px) and (max-width: 1500px){
+            bottom: 20%
         }
         
         
@@ -227,14 +475,13 @@ export default {
     font-size: 1.5rem;
     width: 70%;
     background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(177, 177, 177);
-    border-radius: 12px;
+    border: 1px solid rgb(224, 224, 224);
     height: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
-    -webkit-box-shadow: 0 0 30px rgb(0, 0, 0);
-        box-shadow: 0 0 30px rgb(0, 0, 0);
+    -webkit-box-shadow: 0 0 30px rgb(165, 165, 165);
+        box-shadow: 0 0 30px rgb(185, 185, 185);
 
     
     &__information {
