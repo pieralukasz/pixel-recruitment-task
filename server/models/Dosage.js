@@ -4,22 +4,24 @@ const DosageSchema = new mongoose.Schema({
 
     PESEL: Number,
 
-    drug: String,
+    name: String,
 
-    quantity: Number,
+    surname: String,
 
-    dosageTime: [Object],
+    dosage: [Object],
 
-    dateStart: Date,
+    date: [Object],
 
-    dateEnd: Date,
+    branch: String,
 
-    branch: String
+    createdAd: Date
 
 })
 
-DosageSchema.methods.addDosageTime = function(dosageTimes) {
-    
-}
+DosageSchema.pre('save', function() {
+
+    this.createdAd = new Date()
+
+})
 
 export default mongoose.model('Dosage', DosageSchema)

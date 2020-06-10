@@ -83,6 +83,23 @@ export default {
 
 
             return branchList;
+        },
+
+        async createDosage(context, data) {
+            
+            await axios.post(apiURL + '/create-dosage', data)
+            .then((res) => console.log(res.data))
+        },
+
+        async getDosages(context, PESEL) {
+
+            let dosageList = ""
+
+            await axios.post(apiURL + '/get-dosages', {PESEL})
+                .then(res => dosageList = res.data)
+
+            return dosageList
+
         }
 
     },

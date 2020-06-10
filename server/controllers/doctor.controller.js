@@ -2,6 +2,7 @@ import Drug from '@models/Drugs.js'
 import Doctor from '@models/Doctor.js'
 import Patient from '@models/Patient.js'
 import Branch from '@models/Branch.js'
+import Dosages from '@models/Dosage.js'
 
 const login = async (req, res) => {
 
@@ -79,7 +80,7 @@ const sendInformationPatient = async (req, res) => {
 
 }
 
-const deletePatient = async (req, res) => {
+const deletePatient =  (req, res) => {
 
     const { PESEL, name } = req.body
 
@@ -89,6 +90,34 @@ const deletePatient = async (req, res) => {
 
 }
 
+const createDosage = async (req, res) => {
+
+    const dosage = req.body
+
+    await Dosages.create({
+        PESEL: dosage.PESEL,
+        name: dosage.name,
+        surname: dosage.surname,
+        dosage: dosage.dosage,
+        date: dosage.date,
+        branch: dosage.branch
+    }).then(() => {
+        console.log('dodano do bazy' + dosage);
+        res.json(dosage)
+    })
+
+    res.send('Not...')
+
+}
+
+const getDosages = async (req, res) => {
+
+    const PESEL = req.body.PESEL
+
+    Dosages.find({PESEL}).then(function(branch){
+        res.send(branch)
+    })
+} 
 
 
 
@@ -99,5 +128,7 @@ export default {
     makePatient,
     sendPatients,
     sendInformationPatient,
-    deletePatient
+    deletePatient,
+    createDosage,
+    getDosages
 }

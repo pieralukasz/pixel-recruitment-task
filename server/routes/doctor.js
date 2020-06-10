@@ -17,5 +17,9 @@ doctorRouter.post('/get-information', doctorController.sendInformationPatient)
 
 doctorRouter.delete('/delete-patient', doctorController.deletePatient)
 
+doctorRouter.post('/create-dosage', doctorController.createDosage)
+
+doctorRouter.post('/get-dosages', doctorController.getDosages)
+
 
 export default doctorRouter

@@ -24,8 +24,8 @@
                 label(name="quantity") Tabletki o {{time}}
             .dosage__between(v-else)
             .dosage__date
-                date-picker(v-model="chooseDateStart" valueType="format" placeholder="Poczatek zazywania")
-                date-picker(v-model="chooseDateEnd" valueType="format" placeholder="Koniec zazywania")
+                date-picker(v-model="chooseDateStart" valueType="format" placeholder="Poczatek zazywania" onkeydown="return false;")
+                date-picker(v-model="chooseDateEnd" valueType="format" placeholder="Koniec zazywania" onkeydown="return false;")
             .dosage__branch 
               a.dropdown-trigger2.btn.branch-holder( data-target='dropdown2' @click="getNormalBranch")  {{ chooseBranch }}
               ul#dropdown2.dropdown-content
@@ -99,7 +99,13 @@ export default {
       chooseDateStart: function(oldVal, val) {
         if(oldVal != val) {
           const el = document.querySelectorAll('.mx-icon-calendar')
-          el[0].style.color = "black"
+          el[0].style.color = "gray"
+        }
+      },
+      chooseDateEnd: function(oldVal, val) {
+        if(oldVal != val) {
+          const el = document.querySelectorAll('.mx-icon-calendar')
+          el[1].style.color = "gray"
         }
       }
     },
@@ -181,16 +187,23 @@ export default {
 
     createDosage() {
       const dosage = this.makeDosage()
-      console.log(this.timeDosageChoose);
-      console.log(dosage);
+
+      if(dosage) {
+        this.$store.dispatch('createDosage', dosage)
+        .then(() => {
+          this.$router.push({name: 'PersonalDrug', params: { name: this.patientPesel } })
+        })
+      }
+
     },
 
     makeDosage() {
       
       const validate = this.validateAll()
-      console.log(validate);
 
-      const dosage = {
+      if(validate.length === 0) {
+
+        const dosage = {
           PESEL: this.patient.PESEL,
 
           name: this.patient.name,
@@ -223,6 +236,11 @@ export default {
       }
 
       return dosage
+
+      } 
+      
+      return false
+
 
     },
 

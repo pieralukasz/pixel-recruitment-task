@@ -4,7 +4,7 @@
             .personal__title Profil pacjenta 
             .personal__information {{ patient.surname }} {{ patient.name }}
             .personal__pesel PESEL  {{ patient.PESEL }}
-        .personal__dosages 
+        .personal__dosages {{dosages}}
         .personal__dosages__add.btn-large(@click="addNewDosage") Nowe zlecenie
         .personal__delete__patient(@click="deletePatientAsk")
             i.material-icons delete
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
         patient: "",
+        dosages: "",
         timeToDelete: false
     }
   },
@@ -36,17 +37,19 @@ export default {
   },
 
   watch: {
-      patientPesel: async function(val, oldVal) {
+      patientPesel: async function(oldVal, val) {
           if(oldVal !==  val) {
               this.patient = await this.$store.dispatch('getInformation', this.patientPesel)
+              this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
               this.timeToDelete = false;
           }
-      }
+      },
   },
 
   async created() {
 
       this.patient = await this.$store.dispatch('getInformation', this.patientPesel)
+      this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
 
   },
 
