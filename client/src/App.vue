@@ -11,8 +11,8 @@
   box-sizing: border-box;
 }
 
-.hidder {
-
+.cell {
+  text-align: center;
 }
 
 #app {

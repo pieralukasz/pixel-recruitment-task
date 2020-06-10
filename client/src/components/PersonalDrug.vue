@@ -8,6 +8,8 @@
         .personal__dosages__add.btn-large(@click="addNewDosage") Nowe zlecenie
         .personal__delete__patient(@click="deletePatientAsk")
             i.material-icons delete
+        .personal__print__patient(@click="printPatient")
+            i.material-icons print
         .delete(v-if="timeToDelete")
             .delete__information 
                 .info Czy na pewno chcesz usunac pacjenta 
@@ -63,6 +65,10 @@ export default {
 
       addNewDosage() {
           this.$router.push({name: 'Dosage', params: { name: this.patientPesel }})
+      },
+
+      printPatient() {
+          console.log(this.patient);
       }
 
   },
@@ -167,7 +173,7 @@ export default {
     &__delete__patient {
 
         position: absolute;
-        right: 3%;
+        left: 3%;
         bottom: 10%;
         cursor: pointer;
 
@@ -185,6 +191,28 @@ export default {
             }
         }
         
+    }
+
+    &__print__patient {
+
+        position: absolute;
+        right: 3%;
+        bottom: 10%;
+        cursor: pointer;
+
+        @media (max-width: 900px) {
+            bottom: 20%;
+        }
+        
+        
+        i {
+            font-size: 2.5rem;
+            transition: .3s;
+
+            &:hover {
+                color: rgb(31, 124, 179);
+            }
+        }
     }
 }
 
