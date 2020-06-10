@@ -24,8 +24,8 @@
                 label(name="quantity") Tabletki o {{time}}
             .dosage__between(v-else)
             .dosage__date
-                date-picker(v-model="chooseDateStart" valueType="format" placeholder="Poczatek zazywania" onkeydown="return false;")
-                date-picker(v-model="chooseDateEnd" valueType="format" placeholder="Koniec zazywania" onkeydown="return false;")
+                date-picker(v-model="chooseDateStart" valueType="format" placeholder="Start dawki" onkeydown="return false;")
+                date-picker(v-model="chooseDateEnd" valueType="format" placeholder="Koniec dawki" onkeydown="return false;")
             .dosage__branch 
               a.dropdown-trigger2.btn.branch-holder( data-target='dropdown2' @click="getNormalBranch")  {{ chooseBranch }}
               ul#dropdown2.dropdown-content

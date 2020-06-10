@@ -4,23 +4,32 @@ import Patient from '@models/Patient.js'
 import Branch from '@models/Branch.js'
 import Dosages from '@models/Dosage.js'
 
+// DODAC LOGOWANIE
+
 const login = async (req, res) => {
 
-    const { password } = req.body
+    console.log(req.body);
 
-    const user = await Doctor.findOne({ slugName: password })
+    const { password, login } = req.body
 
-    if(user) {
+    if(password === login) {
+        
+        const user = await Doctor.findOne({ slugName: password })
 
-        const { name, slugName } = user
+        if(user) {
+    
+            const { name, slugName } = user
+    
+            console.log(`Logowanie doktora ${name} powiodlo sie.`)
+    
+            return res.status(201).json( { name, slugName } )
+    
+        } 
+    
+        return res.status(422).json({ message: 'This user does not exist ' })
+    }
 
-        console.log(`Logowanie doktora ${name} powiodlo sie.`)
 
-        return res.status(201).json( { name, slugName } )
-
-    } 
-
-    return res.status(422).json({ message: 'This user does not exist ' })
 
 }
 

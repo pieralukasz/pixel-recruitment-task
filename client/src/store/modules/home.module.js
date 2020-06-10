@@ -1,13 +1,15 @@
 import axios from 'axios'
 import store from '..'
 
-const apiURL = 'http://192.168.8.152:8080'
+// const apiURL = 'http://192.168.8.152:8081'
+
+const apiURL = 'https://zadanie-rekrutacyjne-lekarz.herokuapp.com'
 
 export default {
     
     state: {
 
-        patients: JSON.parse(localStorage.getItem('patients')) || null
+        patients: JSON.parse(localStorage.getItem('patients')) || []
 
     }, 
 

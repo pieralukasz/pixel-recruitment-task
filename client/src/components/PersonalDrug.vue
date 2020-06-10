@@ -2,9 +2,9 @@
     .personal
         .personal__top
             .personal__title Profil pacjenta 
-            .personal__information {{ patient.surname }} {{ patient.name }}
+            .personal__information#printJS-name {{ patient.surname }} {{ patient.name }}
             .personal__pesel PESEL  {{ patient.PESEL }}
-        .personal__dosages 
+        .personal__dosages#printJS-form
             .dosages__container(v-if="dosages") 
                 .dosages__container__navbar 
                     .drug.item Lekarstwo
@@ -85,6 +85,7 @@ export default {
 
   async created() {
 
+
       this.patient = await this.$store.dispatch('getInformation', this.patientPesel)
       this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
 
@@ -114,7 +115,9 @@ export default {
       },
 
       printPatient() {
-          console.log(this.patient);
+
+          window.print()
+          
       },
 
       deleteDosage() {
@@ -131,6 +134,26 @@ export default {
 </script>
 
 <style lang="scss">
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printJS-form, #printJS-form * , #printJS-name, #printJS-name *{
+    visibility: visible;
+  }
+  #printJS-form {
+    position: absolute;
+    left: 0;
+    top: 10%;
+  }
+    #printJS-name {
+    position: absolute;
+    left: 60%;
+    transform: translateX(-50%);
+    top: 5%;
+  }
+}
 
 .personal {
     width: 100%;

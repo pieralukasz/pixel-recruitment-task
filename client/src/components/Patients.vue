@@ -1,12 +1,13 @@
 <template lang="pug">
     .patients
         .patients__information 
-            span Pacjenci
+            div Pacjenci
+            input.inputSearcher(type="text" placeholder="PESEL lub nazwisko" @input="sortLookingPatient" v-model="sortValue")
         .patients__infoflex
             div Nazwisko i imie
             div Pesel
         .patients__container 
-            .patients__patient(v-for="patient in patients" :key="patient._id" @click="moveToPersonal(patient)")
+            .patients__patient(v-for="patient in filterProducts" :key="patient._id" @click="moveToPersonal(patient)")
                 .name.patient__info
                     span {{patient.surname}} {{patient.name}} 
                 .pesel.patient__info
@@ -24,12 +25,29 @@ export default {
   name: 'Patient',
   data() {
     return {
-      
+        sortPatient: false,
+        sortValue: '',
+        
     }
   },
   computed: {
       patients: function() {
         return this.$store.state.Home.patients
+      },
+
+      filterProducts: function()  {
+
+        return this.patients.filter((patient) => {
+            if(patient.surname.match(this.sortValue)) {
+                return patient.surname.match(this.sortValue)
+            }
+            if(patient.name.match(this.sortValue)) {
+                return patient.name.match(this.sortValue)
+            }
+            if(patient.PESEL.match(this.sortValue)) {
+                return patient.PESEL.match(this.sortValue)
+            }       
+        })
       }
   },
 
@@ -43,8 +61,10 @@ export default {
 
   async created() {
 
-      await this.$store.dispatch('getPatients')
-      this.patients.sort(this.compare)
+    await this.$store.dispatch('getPatients') 
+    this.patients.sort(this.compare)
+
+
     
   },
   methods: {
@@ -55,6 +75,10 @@ export default {
         this.hideHamburger()
       }
       
+    },
+
+    sortLookingPatient() {
+
     },
 
     hideHamburger() {
@@ -113,18 +137,28 @@ export default {
 
   &__information {
 
-      width: 100%;
+      width: 80%;
       text-align: center;
       margin-top: 20px;
       font-size: 1.5rem;
       text-transform: uppercase;
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 6%;
+
+      div {
+        margin-left: 10%;
+        margin-right: 5%;
+      }
+      
       
       &::after {
 
       display: block;
       content: '';
-      width: 80%;
+      width: 90%;
       height: 1px;
       background: rgb(173, 173, 173);
       position: absolute;
@@ -151,14 +185,16 @@ export default {
 
   &__container{
 
-    // margin-top: 40px;
     width: 100%;
-    height: 80%;
+    max-height: 78%;
     overflow-y: scroll;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+
+    @media (max-width: 700px) {
+      max-height: 73%;
+    }
 
     .patients__patient {
       display: flex;

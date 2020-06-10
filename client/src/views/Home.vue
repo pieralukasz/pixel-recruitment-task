@@ -4,6 +4,8 @@
       .right
         Navbar
         router-view
+        Kadu(v-if="homePage")
+
 
 
 
@@ -13,16 +15,47 @@
 
 import Patients from '@/components/Patients.vue'
 import Navbar from '@/components/Navbar.vue'
+import Kadu from '@/components/Kadu.vue'
 
 export default {
   name: 'Home',
+  data() { 
+    return{
+      homePage: false
+    }
+  },
   components: {
     Patients,
     Navbar,
+    Kadu
+  },
+  computed: {
+    currentRouteName() {
+        return this.$route.name;
+    }
+  },
+
+  watch: {
+    currentRouteName(val, oldVal) {
+        if(oldVal !== val) {
+          this.checkRouter()
+        }
+    }
   },
 
   created() {
     this.$store.dispatch('pills')
+    this.checkRouter()
+  },
+
+  methods: {
+    checkRouter(){
+      if(this.currentRouteName === 'Home') {
+        this.homePage = true
+      } else {
+        this.homePage = false
+      }
+    }
   },
 
 }

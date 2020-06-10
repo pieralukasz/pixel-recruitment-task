@@ -5,7 +5,9 @@
         .navbar__info 
             span Panel zarzadzania pacjentami
         .navbar__doctor-name
-            span Dr {{doctor.name}}         
+            span Dr {{doctor.name}}
+        .navbar__home(@click="goToHome")
+            i.material-icons home
         Logout.logout-comp
 
 
@@ -32,6 +34,13 @@ export default {
 
     },
     methods: {
+
+        goToHome() {
+            if(this.$route.name !== 'Home') {
+                this.$router.push({name: 'Home'})
+            }
+            
+        },
 
         showPatients() {
             const patients = document.querySelector('.patients')
@@ -119,17 +128,38 @@ export default {
         right: 2%;
     }
 
+    .navbar__home {
+        position: absolute;
+        left: 3%;
+        top: 54%;
+        transform: translateY(-50%);
+        
+
+        i {
+            font-size: 1.7rem;
+            cursor: pointer;
+            &:hover {
+                color: #26a69a;
+            }
+        }
+    }
+
     @media (max-width: 1000px) {
         &__hamburger {
             left: 4%;
         }
 
         &__info {
-            left: 17%
+            left: 22%
         }
 
         &__doctor-name {
-            left: 17%;
+            left: 22%;
+        }
+
+        .navbar__home {
+            top: 52%;
+            left: 13%
         }
 
         .logout-comp {
@@ -139,6 +169,8 @@ export default {
         font-size: 1.1rem;
         
     }
+
+
 
 
 
