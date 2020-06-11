@@ -1,8 +1,8 @@
 <template lang="pug">
     .kadu
         img(src="../assets/kadu.png")
-        .information <span>E</span>widencja  <span>D</span>awkowania <span>L</span>ekow
-        .pieras Wykonal w calosci Lukasz Piera
+        .information <span>E</span>widencja  <span>D</span>awkowania <span>L</span>eków
+        .pieras Wykonał w całości Łukasz Piera
 
 </template>
 
@@ -57,6 +57,14 @@ export default {
         right: 5%;
         top: 5%;
         font-size: 1.2rem;
+
+        @media (max-width: 1000px) {
+
+            top: 2%;
+            right: 3%;
+            font-size: 1rem;
+            
+        }
     }
 
     .information {

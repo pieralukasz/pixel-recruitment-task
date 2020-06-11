@@ -4,7 +4,7 @@
             div Pacjenci
             input.inputSearcher(type="text" placeholder="PESEL lub nazwisko" @input="sortLookingPatient" v-model="sortValue")
         .patients__infoflex
-            div Nazwisko i imie
+            div Nazwisko i imię
             div Pesel
         .patients__container 
             .patients__patient(v-for="patient in filterProducts" :key="patient._id" @click="moveToPersonal(patient)")

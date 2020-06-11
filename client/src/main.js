@@ -6,10 +6,6 @@ import store from './store'
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import Vuelidate from 'vuelidate'
-
-
-Vue.use(Vuelidate)
 
 Vue.component('ValidationProvider', ValidationProvider);
 extend('required', {

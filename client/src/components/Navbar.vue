@@ -3,7 +3,7 @@
         .navbar__hamburger(@click="showPatients")
             i.material-icons menu
         .navbar__info 
-            span Panel zarzadzania pacjentami
+            span Panel zarządzania pacjentami
         .navbar__doctor-name
             span Dr {{doctor.name}}
         .navbar__home(@click="goToHome")

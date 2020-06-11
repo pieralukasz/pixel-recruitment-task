@@ -8,12 +8,10 @@ import Dosages from '@models/Dosage.js'
 
 const login = async (req, res) => {
 
-    console.log(req.body);
-
     const { password, login } = req.body
 
     if(password === login) {
-        
+
         const user = await Doctor.findOne({ slugName: password })
 
         if(user) {
@@ -26,6 +24,9 @@ const login = async (req, res) => {
     
         } 
     
+        return res.status(422).json({ message: 'This user does not exist ' })
+    } else {
+        
         return res.status(422).json({ message: 'This user does not exist ' })
     }
 
@@ -124,7 +125,6 @@ const getDosages = async (req, res) => {
     const PESEL = req.body.PESEL
 
     Dosages.find({PESEL}).then(function(branch){
-        console.log(branch);
         res.send(branch)
     })
 } 

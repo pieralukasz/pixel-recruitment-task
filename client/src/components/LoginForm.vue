@@ -5,15 +5,13 @@
           .login__form__information 
               span Panel logowania lekarza
           .login__form__login.login_element
-            ValidationProvider.validation(v-slot="{ errors }" rules="required")
-              input.login__input(type="text" name="login" v-model="doctor.login")
-              label(name="login" v-if="!errors[0]") Login
+              input.login__input(type="text" name="login" v-model="doctor.login" @input="makeNormal")
+              label(name="login" v-if="errorLogin") Login
               label(name="login" v-else).red-text Login
           .login__form__password.login_element
-            ValidationProvider.validation(v-slot="{ errors }" rules="password")
-              input.login__input(type="password" name="password" v-model="doctor.password")
-              label(name="password" v-if="!errors[0]") Haslo 
-              label(name="password" v-else).red-text Haslo
+              input.login__input(type="password" name="password" v-model="doctor.password" @input="makeNormal")
+              label(name="password" v-if="errorLogin") Hasło
+              label(name="password" v-else).red-text Hasło
           .login__form__button.login_element
               button.login__button.btn Zaloguj
 
@@ -27,10 +25,11 @@ export default {
   name: 'Login',
   data() {
     return {
-      
+      errorLogin: true,
       doctor: {
           login: "",
-          password: ""
+          password: "",
+          
       }
       
     }
@@ -41,7 +40,11 @@ export default {
 
         this.$store.dispatch('login', this.doctor)
         .then(() => this.$router.push({name: 'Home'}))
-        .catch(() => console.log('Sprobuj ponownie'))
+        .catch(() => this.errorLogin = false)
+    },
+
+    makeNormal() {
+      this.errorLogin = true
     }
 
   },

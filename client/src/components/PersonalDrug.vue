@@ -8,10 +8,10 @@
             .dosages__container(v-if="dosages") 
                 .dosages__container__navbar 
                     .drug.item Lekarstwo
-                    .time_quantity.item Czas i ilosc
-                    .period-start.item Poczatek 
+                    .time_quantity.item Czas i ilość
+                    .period-start.item Początek 
                     .period-end.item Koniec
-                    .branch.item Oddzial
+                    .branch.item Oddział
                     .delete__dosage.item
                 .dosages__container__items
                     template(v-for="dosage in dosages")
@@ -27,7 +27,7 @@
                             i.material-icons(@click="deleteDosageAsk(dosage)") delete
                         .border-bottom
             .dosages__error(v-else) BRAK LEKARSTW   
-        .personal__dosages__add.btn-large(@click="addNewDosage") Nowe zlecenie
+        .personal__dosages__add.btn-large(@click="addNewDosage") Zlecenie
         .personal__delete__patient(@click="deletePatientAsk")
             i.material-icons delete
         .personal__print__patient(@click="printPatient")
@@ -75,11 +75,6 @@ export default {
               this.timeToDelete = false;
           }
       },
-      dosages: async function(oldVal, val) {
-          if(oldVal !== val) {
-              this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
-          }
-      }
 
   },
 
@@ -124,6 +119,7 @@ export default {
           this.$store.dispatch('deleteDosage', this.dosageDelete)
           .then(() => {
               this.timeToDeleteDosage = false
+              this.dosages =  this.$store.dispatch('getDosages', this.patientPesel)
           })
 
       }
@@ -423,12 +419,13 @@ export default {
         font-size: 1.3rem;
 
         @media (max-height: 600px) {
-            bottom: 30%
+            bottom: 40%
         }
 
         @media (max-height: 1500px) {
             bottom: 20%
         }
+
     }
     
 

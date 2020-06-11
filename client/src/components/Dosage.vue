@@ -7,7 +7,7 @@
               .dosage__drugs__information {{ chooseDrugInformation.info }}
               a.dropdown-trigger.btn.drugs-holder( data-target='dropdown1' @click="getNormalDrug")  {{ chooseDrug }}
               ul#dropdown1.dropdown-content
-                input(type="text" placeholder="Wyszukaj lub wybierz recznie") 
+                input(type="text" placeholder="Wyszukaj lub wybierz ręcznie") 
                 template(v-for="drug in drugs")
                   li(@click="closeInstance(drug)") {{drug.namePolish}}
                   li.divider(tabindex="-1")
@@ -17,7 +17,7 @@
                 label 
                   input(type="checkbox" v-model="timeDosageChoose[index]" @click="makeNormalCheckbox")
                   span {{time}}
-              label.timelabel Godzina przyjecia lekarstwa
+              label.timelabel Godzina przyjęcia lekarstwa
             .dosage__quantity(v-if="isAnyTrueTime")
               .container-for-input(v-for="(time, index) in timeDosage" v-show="timeDosageChoose[index]")
                 input(type="number" name="quantity" min="0" v-model="timeDosageValue[index]" @input="makeNormalInput(index)")
@@ -26,6 +26,7 @@
             .dosage__date
                 date-picker(v-model="chooseDateStart" valueType="format" placeholder="Start dawki" onkeydown="return false;")
                 date-picker(v-model="chooseDateEnd" valueType="format" placeholder="Koniec dawki" onkeydown="return false;")
+                label.label-data-picker {{labelDateValue}}
             .dosage__branch 
               a.dropdown-trigger2.btn.branch-holder( data-target='dropdown2' @click="getNormalBranch")  {{ chooseBranch }}
               ul#dropdown2.dropdown-content
@@ -33,7 +34,7 @@
                   li(@click="closeInstanceBranch(branch)") {{branch.name}}
                   li.divider(tabindex="-1")
             .dosage__confirm
-              .btn.purple(@click.prevent="createDosage") Potwierdz
+              .btn.purple(@click.prevent="createDosage") Potwierdź
         i.material-icons(@click="backToPrevious") skip_previous
 
 
@@ -54,14 +55,15 @@ export default {
             drugs: "",
             branches: "",
             chooseDrug: "Wybierz lek z listy",
-            chooseBranch: 'Wybierz oddzial na ktory dostarczyc lekarstwo',
+            chooseBranch: 'Wybierz oddział na który dostarczyć lekarstwo',
             instanceDrug: "",
             instanceBranch: "",
             timeDosage: ['08:00',  '15:00', '22:00'],
             timeDosageChoose: [false, false, false],
             timeDosageValue: [0, 0, 0],
             chooseDateStart: "",
-            chooseDateEnd: ""
+            chooseDateEnd: "",
+            labelDateValue: ""
       }
     },
     components: {
@@ -100,12 +102,14 @@ export default {
         if(oldVal != val) {
           const el = document.querySelectorAll('.mx-icon-calendar')
           el[0].style.color = "gray"
+          this.labelDateValue = ""
         }
       },
       chooseDateEnd: function(oldVal, val) {
         if(oldVal != val) {
           const el = document.querySelectorAll('.mx-icon-calendar')
           el[1].style.color = "gray"
+          this.labelDateValue = ""
         }
       }
     },
@@ -141,6 +145,7 @@ export default {
       },
       getNormalDate() {
         const date = document.querySelectorAll('.mx-datepicker') 
+        
         date.style.color = "black"
       },
       makeNormalCheckbox() {
@@ -288,6 +293,10 @@ export default {
         errorContainer.push(false)
       }
 
+      if(!this.checkDateMinMax()) {
+        errorContainer.push(false)
+      }
+
       return errorContainer
     },
 
@@ -351,6 +360,40 @@ export default {
         return false
       }
       
+    },
+
+    checkDateMinMax(){
+
+      const dateStartMonth = [...this.chooseDateStart][5] === "0" ? [...this.chooseDateStart][6] : 
+      [...this.chooseDateStart][5] + [...this.chooseDateStart][6]
+
+      const dateEndMonth = [...this.chooseDateEnd][5] === "0" ? [...this.chooseDateEnd][6] : 
+      [...this.chooseDateEnd][5] + [...this.chooseDateEnd][6]
+
+      const dateStartDay = [...this.chooseDateStart][8] === "0" ? [...this.chooseDateStart][9] : 
+      [...this.chooseDateStart][8] + [...this.chooseDateStart][9]
+
+      const dateEndDay = [...this.chooseDateEnd][8] === "0" ? [...this.chooseDateEnd][9] : 
+      [...this.chooseDateEnd][8] + [...this.chooseDateEnd][9]
+
+      if(dateStartMonth > dateEndMonth) {
+
+        this.labelDateValue = 'Data poczatkowa nie moze byc wieksza od koncowej.'
+        return false
+      } else if(dateStartMonth === dateEndMonth){
+          if(dateStartDay > dateEndDay) {
+            this.labelDateValue = 'Data poczatkowa nie moze byc wieksza od koncowej.'
+            return false
+          } else if (dateStartDay === dateEndDay){
+            return true
+          } else {
+            return true
+          }
+      } else {
+        return true
+      }
+
+
     }
 
   },
@@ -471,6 +514,16 @@ export default {
       align-items: center;
       text-align: center;
       width: 100%;
+      position: relative;
+
+      .label-data-picker {
+        // left: 50%;
+        bottom: 10%;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        color: red;
+      }
 
       .mx-datepicker {
         display: flex;
