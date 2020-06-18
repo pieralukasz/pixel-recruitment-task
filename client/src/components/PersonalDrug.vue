@@ -75,6 +75,10 @@ export default {
               this.timeToDelete = false;
           }
       },
+      dosages: async function(oldVal, val) {
+          if(oldVal !==  val) {
+              this.dosages = await this.$store.dispatch('getDosages', this.patientPesel)
+        }}
 
   },
 

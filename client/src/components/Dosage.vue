@@ -20,7 +20,7 @@
               label.timelabel Godzina przyjęcia lekarstwa
             .dosage__quantity(v-if="isAnyTrueTime")
               .container-for-input(v-for="(time, index) in timeDosage" v-show="timeDosageChoose[index]")
-                input(type="number" name="quantity" min="0" v-model="timeDosageValue[index]" @input="makeNormalInput(index)")
+                input(type="number" name="quantity" min="0" v-model="timeDosageValue[index]" @input="makeNormalInput(index)" onkeydown="return false;")
                 label(name="quantity") Tabletki o {{time}}
             .dosage__between(v-else)
             .dosage__date

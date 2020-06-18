@@ -17,6 +17,11 @@ export default {
         async login({ commit }, data) {
             await axios.post(apiURL + `/login`, data)
             .then(res => {commit('SET_DOCTOR', res.data)})
+        },
+
+        async logout({ commit }) {
+            commit('CLEAR_DOCTOR')
+            commit('CLEAR_PATIENTS')
         }
 
     },
@@ -31,7 +36,9 @@ export default {
         CLEAR_DOCTOR () {
             localStorage.removeItem('doctor')
             location.reload()
-        }
+        },
+
+
         
     }
 }
