@@ -1,8 +1,3 @@
-# Zadanie rekrutacyjne dla Pixel Technology
-
-Wykonane zadanie rekrutacyjne na stanowisko Junior Frontend Developer
-Aby zobaczyć jak strona wygląda na żywo bez ściągania kodu wystarczy wejść na stronę: 
-
 http://pieralukasz.me/zadanie/
 
 Na samym początku strona wymaga od nas zalogowania.
