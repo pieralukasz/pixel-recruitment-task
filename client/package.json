@@ -9,7 +9,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "materialize-css": "^1.0.0-rc.2",
     "register-service-worker": "^1.7.1",
